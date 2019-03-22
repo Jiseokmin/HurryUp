@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);         ///// 맨 상단의 액션바 안보이게 하기
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //////4개의 이미지 버튼 생성///////
 
         final ImageButton imagebtn_chicken = (ImageButton) findViewById(R.id.start);
         final ImageButton imagebtn_soju = (ImageButton) findViewById(R.id.seeNow);

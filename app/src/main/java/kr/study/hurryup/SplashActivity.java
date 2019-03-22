@@ -18,7 +18,7 @@ public class SplashActivity extends Activity {
             E.printStackTrace();
         }
 
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this,MainActivity.class));     ////MainActivity 로 이동
         finish();
 
     }

@@ -23,7 +23,9 @@
 
 
         <activity android:name=".MainActivity">
-        </activity>
+        </activity>        
+        <activity android:name=".PictureActivity"></activity>
+        <activity android:name=".OptionActivity"></activity>
     </application>
 
 </manifest>

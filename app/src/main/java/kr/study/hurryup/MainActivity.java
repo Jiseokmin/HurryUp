@@ -1,9 +1,11 @@
 package kr.study.hurryup;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +25,31 @@ public class MainActivity extends AppCompatActivity {
 
         //////4개의 이미지 버튼 생성///////
 
-        final ImageButton imagebtn_chicken = (ImageButton) findViewById(R.id.start);
-        final ImageButton imagebtn_soju = (ImageButton) findViewById(R.id.seeNow);
-        final ImageButton imagebtn_mic = (ImageButton) findViewById(R.id.select);
-        final ImageButton imagebtn_basketball = (ImageButton) findViewById(R.id.setting);
+        final ImageButton imagebtn_start = (ImageButton) findViewById(R.id.start);
+        final ImageButton imagebtn_seenow = (ImageButton) findViewById(R.id.seeNow);
+        final ImageButton imagebtn_select = (ImageButton) findViewById(R.id.select);
+        final ImageButton imagebtn_setting = (ImageButton) findViewById(R.id.setting);
+
+
+
+        imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent intent = new Intent(MainActivity.this, SelectPoseActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        imagebtn_setting.setOnClickListener(new View.OnClickListener() {        //// 설정 화면으로 이동
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent intent = new Intent(MainActivity.this, OptionActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
     }
 }

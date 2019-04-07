@@ -37,8 +37,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
-                Intent intent = new Intent(MainActivity.this, SelectPoseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SelectPoseActivity.class);
                 MainActivity.this.startActivity(intent);
+            }
+        });
+
+        imagebtn_seenow.setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
-                Intent intent = new Intent(MainActivity.this, OptionActivity.class);
+                Intent intent = new Intent(getApplicationContext(), OptionActivity.class);
                 MainActivity.this.startActivity(intent);
             }
         });

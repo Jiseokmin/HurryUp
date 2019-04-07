@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".StreamingActivity">
+
+
+    <org.xwalk.core.XWalkView
+        android:id="@+id/xwalkWebView"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/txtv_responseText"
+        android:background="#ffffff"
+        />
+
+    <TextView
+        android:textSize="24dp"
+        android:text="Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtv_responseText"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btn_toggle"
+        android:layout_weight="1"/>
+
+    <Button
+        android:textSize="24dp"
+        android:text="Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_toggle"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"/>
+
+</RelativeLayout>

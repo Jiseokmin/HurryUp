@@ -30,7 +30,7 @@ public class StreamingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streaming);
 
-        final String IP_ADDRESS = "192.168.30.33";
+        final String IP_ADDRESS = "192.168.24.40";
         final int PORT_NUMBER = 8888;
 
         xWalkWebView = (XWalkView) findViewById(R.id.xwalkWebView);

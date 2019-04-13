@@ -1,5 +1,6 @@
 package kr.study.hurryup;
 
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,11 @@ public class OptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
+        final SeekBar sb_sound = (SeekBar)findViewById(R.id.seekBar_sound);
+        final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int nCurrntVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
         final SeekBar sb_vibe = (SeekBar) findViewById(R.id.seekBar_vibe);
         btn_test = (Button)findViewById(R.id.btn_test);
         select_box = (RadioGroup)findViewById(R.id.radioGroup);
@@ -43,6 +49,25 @@ public class OptionActivity extends AppCompatActivity{
                 Log.w("Send to rasp", message.getText().toString());
                 Vibe_test test = new Vibe_test(ip, port, message.getText().toString());
                 test.execute();
+            }
+        });
+
+        sb_sound.setMax(nMax);
+        sb_sound.setProgress(nCurrntVol);
+        sb_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress,0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 

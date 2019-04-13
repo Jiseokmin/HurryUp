@@ -1,13 +1,17 @@
 package kr.study.hurryup;
 
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +24,7 @@ public class OptionActivity extends AppCompatActivity{
 
     Button btn_test;
     RadioGroup select_box;
-    final String ip = "192.168.0.16";
+    final String ip = "192.168.24.40";
     final int port = 8888;
 
     @Override
@@ -28,6 +32,12 @@ public class OptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
+        final SeekBar sb_sound = (SeekBar)findViewById(R.id.seekBar_sound);
+        final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int nCurrntVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        final SeekBar sb_vibe = (SeekBar) findViewById(R.id.seekBar_vibe);
         btn_test = (Button)findViewById(R.id.btn_test);
         select_box = (RadioGroup)findViewById(R.id.radioGroup);
         btn_test.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +51,59 @@ public class OptionActivity extends AppCompatActivity{
                 test.execute();
             }
         });
+
+        sb_sound.setMax(nMax);
+        sb_sound.setProgress(nCurrntVol);
+        sb_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress,0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        ///진동 seekbar change listener
+        sb_vibe.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                String str_progress = String.valueOf(progress);
+
+                //  Log.w("Send to rasp", String.valueOf((progress+3)/10));
+                Vibe_test test = new Vibe_test(ip, port, str_progress);
+                test.execute();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        ////드래그 방지
+        sb_vibe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+
+                    return false;
+                }
+                return true;
+
+            }
+        });
+
     }
 
     public class Vibe_test extends AsyncTask<Void, Void,Void>{
@@ -56,7 +119,7 @@ public class OptionActivity extends AppCompatActivity{
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Void... arg0) {
             Socket socket = null;
             try {
                 socket = new Socket(dstAddress, dstPort);
@@ -88,4 +151,6 @@ public class OptionActivity extends AppCompatActivity{
         }
     }
 }
+
+
 

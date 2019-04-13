@@ -1,5 +1,6 @@
 package kr.study.hurryup;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -20,11 +22,17 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class OptionActivity extends AppCompatActivity{
+public class OptionActivity extends AppCompatActivity {
 
     Button btn_test;
-    RadioGroup select_box;
-    final String ip = "192.168.24.40";
+    Button btn_input;
+    RadioGroup select_box_test;
+    RadioGroup select_box_vib;
+    String ip;
+
+
+    EditText input_ip;
+
     final int port = 8888;
 
     @Override
@@ -32,22 +40,58 @@ public class OptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
+
+        input_ip = (EditText)findViewById(R.id.editText_ip_address);
+        input_ip.setText(((OptionData) this.getApplication()).getIp_address());
+
+        btn_input = (Button)findViewById(R.id.btn_input);
+        btn_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ip = input_ip.getText().toString();
+            }
+        });
+
         final SeekBar sb_sound = (SeekBar)findViewById(R.id.seekBar_sound);
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int nCurrntVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        final SeekBar sb_vibe = (SeekBar) findViewById(R.id.seekBar_vibe);
         btn_test = (Button)findViewById(R.id.btn_test);
-        select_box = (RadioGroup)findViewById(R.id.radioGroup);
+        select_box_test = (RadioGroup)findViewById(R.id.radioGroup);
         btn_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.w("IP : ", ip);
                 Log.w("Button clicked", "button clicked");
-                int id = select_box.getCheckedRadioButtonId();
+                int id = select_box_test.getCheckedRadioButtonId();
                 RadioButton message = (RadioButton)findViewById(id);
                 Log.w("Send to rasp", message.getText().toString());
                 Vibe_test test = new Vibe_test(ip, port, message.getText().toString());
+                test.execute();
+            }
+        });
+
+        select_box_vib = (RadioGroup)findViewById(R.id.Group_vib);
+        select_box_vib.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            String message;
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.w("IP : ", ip);
+                if(checkedId == R.id.rbt_off){
+                    message = "0";
+                }
+                else if(checkedId == R.id.rbt_weak){
+                    message = "0.6";
+                }
+                else if(checkedId == R.id.rbt_strong){
+                    message = "1";
+                }
+                else{
+                    message = "1";
+                }
+                Log.w("message : ", message);
+                Vibe_test test = new Vibe_test(ip, port, message);
                 test.execute();
             }
         });
@@ -70,40 +114,6 @@ public class OptionActivity extends AppCompatActivity{
 
             }
         });
-
-        ///진동 seekbar change listener
-        sb_vibe.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                String str_progress = String.valueOf(progress);
-
-                //  Log.w("Send to rasp", String.valueOf((progress+3)/10));
-                Vibe_test test = new Vibe_test(ip, port, str_progress);
-                test.execute();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        ////드래그 방지
-        sb_vibe.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-
-                    return false;
-                }
-                return true;
-
-            }
-        });
-
     }
 
     public class Vibe_test extends AsyncTask<Void, Void,Void>{
@@ -150,7 +160,11 @@ public class OptionActivity extends AppCompatActivity{
             return null;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        ((OptionData) this.getApplication()).setIp_address(input_ip.getText().toString());
+        //Log.d("TAG", optionData.getIp_address());
+        finish();
+    }
 }
-
-
-

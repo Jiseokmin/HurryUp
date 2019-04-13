@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 public class StreamingActivity extends AppCompatActivity {
 
     private XWalkView xWalkWebView;
+    TextView textView_ip_address;
     TextView textView_response;
     Button btn_toggle;
     String IP_ADDRESS;
@@ -33,21 +34,7 @@ public class StreamingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streaming);
 
-        IP_ADDRESS = "192.168.0.24"; //"192.168.30.33"; // 192.168.0.24
-        //final String IP_ADDRESS;
-        //final String IP_ADDRESS = "hurryup";
-        //final int PORT_NUMBER = 8888;
-
-        /*
-        try {
-            InetAddress address = InetAddress.getByName("http://hurryup:8080/");
-            IP_ADDRESS = address.getHostAddress();
-            textView_response.setText(IP_ADDRESS);
-        } catch (UnknownHostException e) {
-            textView_response.setText("주소를 찾을 수 없습니다.");
-        }*/
-        // http://raspberrypi:8080/stream/video.mjpeg
-        // xWalkWebView.loadUrl("http://192.168.0.23:8080/stream/video.mjpeg");
+        IP_ADDRESS = ((OptionData) this.getApplication()).getIp_address();
 
         xWalkWebView = findViewById(R.id.xwalkWebView);
         xWalkWebView.getSettings().setLoadWithOverviewMode(true);
@@ -56,8 +43,11 @@ public class StreamingActivity extends AppCompatActivity {
 
         XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
 
+        textView_ip_address = findViewById(R.id.textView_ip_address);
         textView_response = findViewById(R.id.textView_responseText);
         btn_toggle = findViewById(R.id.btn_toggle);
+
+        textView_ip_address.setText(IP_ADDRESS);
 
 
 

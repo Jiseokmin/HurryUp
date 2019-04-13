@@ -5,12 +5,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +29,14 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton imagebtn_select = (ImageButton) findViewById(R.id.select);
         final ImageButton imagebtn_setting = (ImageButton) findViewById(R.id.setting);
 
-
+        //OptionData optionData = new OptionData("");
+        OptionData optionData = (OptionData) getApplication();
+        optionData.setIp_address("");
 
         imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
 
-            @Override
-            public void onClick(View arg0) {
-
+                @Override
+                public void onClick(View arg0) {
                 Intent intent = new Intent(getApplicationContext(), SelectPoseActivity.class);
                 MainActivity.this.startActivity(intent);
             }
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
+                //intent.putExtra("optionData", optionData);
                 startActivity(intent);
             }
         });
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-
                 Intent intent = new Intent(getApplicationContext(), OptionActivity.class);
+                //intent.putExtra("optionData", optionData);
                 MainActivity.this.startActivity(intent);
             }
         });

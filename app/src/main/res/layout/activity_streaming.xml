@@ -21,6 +21,18 @@
 
     <TextView
         android:textSize="24dp"
+        android:text="ip address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_ip_address"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/textView_responseText"
+        android:layout_weight="1"
+        android:paddingBottom="12dp" />
+
+    <TextView
+        android:textSize="24dp"
         android:text="Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

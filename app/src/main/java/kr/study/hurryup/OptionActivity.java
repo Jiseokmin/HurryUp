@@ -86,13 +86,6 @@ public class OptionActivity extends AppCompatActivity{
             }
             return null;
         }
-
-
-
     }
-
-
-
-
 }
 

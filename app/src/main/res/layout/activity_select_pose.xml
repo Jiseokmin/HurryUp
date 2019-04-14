@@ -27,8 +27,6 @@
             />
     </android.support.v7.widget.Toolbar>
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,6 +57,16 @@
             android:scaleType="fitCenter"
             android:src="@drawable/btn_pose_basic"/>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/pose_exercise"
             android:layout_width="wrap_content"
@@ -68,26 +76,6 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:src="@drawable/btn_pose_exercise" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-
-
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/pose_teach"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_teach"/>
 
     </LinearLayout>
 </LinearLayout>

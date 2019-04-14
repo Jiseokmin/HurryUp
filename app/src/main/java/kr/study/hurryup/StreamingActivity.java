@@ -3,6 +3,7 @@ package kr.study.hurryup;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -104,6 +105,7 @@ public class StreamingActivity extends AppCompatActivity {
                 e.printStackTrace();
                 response = "IOException: " + e.toString();
             }
+            Log.w("message : ", myMessage);
             return null;
         }
 

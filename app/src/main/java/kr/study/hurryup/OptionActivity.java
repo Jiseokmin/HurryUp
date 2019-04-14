@@ -23,81 +23,51 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class OptionActivity extends AppCompatActivity {
+    private EditText editText_ip_address;
 
-    Button btn_test;
-    Button btn_input;
-    RadioGroup select_box_test;
-    RadioGroup select_box_vib;
-    String ip;
-
-
-    EditText input_ip;
-
-    final int port = 8888;
+    final int PORT = 8888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-
-        input_ip = (EditText)findViewById(R.id.editText_ip_address);
-        input_ip.setText(((OptionData) this.getApplication()).getIp_address());
-
-        btn_input = (Button)findViewById(R.id.btn_input);
-        btn_input.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ip = input_ip.getText().toString();
-            }
-        });
-
+        final RadioGroup radio_vibe_strength = (RadioGroup)findViewById(R.id.Group_vib);
         final SeekBar sb_sound = (SeekBar)findViewById(R.id.seekBar_sound);
+        final Button btn_ok = (Button) findViewById(R.id.btn_ok);
+        final Button btn_cancel = (Button) findViewById(R.id.btn_cancel);
+
+        editText_ip_address = (EditText)findViewById(R.id.input_ip);
+        editText_ip_address.setText(getIpAddress());
+
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int nCurrntVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int nCurrentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        btn_test = (Button)findViewById(R.id.btn_test);
-        select_box_test = (RadioGroup)findViewById(R.id.radioGroup);
-        btn_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("IP : ", ip);
-                Log.w("Button clicked", "button clicked");
-                int id = select_box_test.getCheckedRadioButtonId();
-                RadioButton message = (RadioButton)findViewById(id);
-                Log.w("Send to rasp", message.getText().toString());
-                Vibe_test test = new Vibe_test(ip, port, message.getText().toString());
-                test.execute();
-            }
-        });
-
-        select_box_vib = (RadioGroup)findViewById(R.id.Group_vib);
-        select_box_vib.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radio_vibe_strength.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             String message;
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.w("IP : ", ip);
                 if(checkedId == R.id.rbt_off){
-                    message = "0";
+                    message = "vibration strength 0";
                 }
                 else if(checkedId == R.id.rbt_weak){
-                    message = "0.6";
+                    message = "vibration strength 0.6";
                 }
                 else if(checkedId == R.id.rbt_strong){
-                    message = "1";
+                    message = "vibration strength 1";
                 }
                 else{
-                    message = "1";
+                    message = "toggle vibrator";
                 }
                 Log.w("message : ", message);
-                Vibe_test test = new Vibe_test(ip, port, message);
+                Vibe_test test = new Vibe_test(editText_ip_address.getText().toString(), PORT, message);
                 test.execute();
             }
         });
 
         sb_sound.setMax(nMax);
-        sb_sound.setProgress(nCurrntVol);
+        sb_sound.setProgress(nCurrentVol);
         sb_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -114,6 +84,29 @@ public class OptionActivity extends AppCompatActivity {
 
             }
         });
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveOptions();
+                finish();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public String getIpAddress() {
+        return ((OptionData) this.getApplication()).getIp_address();
+    }
+
+    private void saveOptions() {
+        ((OptionData) this.getApplication()).setIp_address(editText_ip_address.getText().toString());
     }
 
     public class Vibe_test extends AsyncTask<Void, Void,Void>{
@@ -122,15 +115,15 @@ public class OptionActivity extends AppCompatActivity {
         String response = "";
         String myMessage;
 
-        Vibe_test(String addres, int port, String message){
-            dstAddress = addres;
+        Vibe_test(String address, int port, String message){
+            dstAddress = address;
             dstPort = port;
             myMessage = message;
         }
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            Socket socket = null;
+            Socket socket;
             try {
                 socket = new Socket(dstAddress, dstPort);
                 InputStream inputStream = socket.getInputStream();
@@ -159,12 +152,5 @@ public class OptionActivity extends AppCompatActivity {
             }
             return null;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        ((OptionData) this.getApplication()).setIp_address(input_ip.getText().toString());
-        //Log.d("TAG", optionData.getIp_address());
-        finish();
     }
 }

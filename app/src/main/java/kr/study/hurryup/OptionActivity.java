@@ -1,17 +1,13 @@
 package kr.study.hurryup;
 
-import android.content.Intent;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
@@ -32,12 +28,12 @@ public class OptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-        final RadioGroup radio_vibe_strength = (RadioGroup)findViewById(R.id.Group_vib);
-        final SeekBar sb_sound = (SeekBar)findViewById(R.id.seekBar_sound);
-        final Button btn_ok = (Button) findViewById(R.id.btn_ok);
-        final Button btn_cancel = (Button) findViewById(R.id.btn_cancel);
+        final RadioGroup radio_vibe_strength = findViewById(R.id.Group_vib);
+        final SeekBar sb_sound = findViewById(R.id.seekBar_sound);
+        final Button btn_ok = findViewById(R.id.btn_ok);
+        final Button btn_cancel = findViewById(R.id.btn_cancel);
 
-        editText_ip_address = (EditText)findViewById(R.id.input_ip);
+        editText_ip_address = findViewById(R.id.input_ip);
         editText_ip_address.setText(getIpAddress());
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -61,8 +57,8 @@ public class OptionActivity extends AppCompatActivity {
                     message = "toggle vibrator";
                 }
                 Log.w("message : ", message);
-                Vibe_test test = new Vibe_test(editText_ip_address.getText().toString(), PORT, message);
-                test.execute();
+                VibrationStrengthTask vibrationStrengthTask = new VibrationStrengthTask(editText_ip_address.getText().toString(), PORT, message);
+                vibrationStrengthTask.execute();
             }
         });
 
@@ -109,13 +105,13 @@ public class OptionActivity extends AppCompatActivity {
         ((OptionData) this.getApplication()).setIp_address(editText_ip_address.getText().toString());
     }
 
-    public class Vibe_test extends AsyncTask<Void, Void,Void>{
+    private static class VibrationStrengthTask extends AsyncTask<Void, Void,Void>{
         String dstAddress;
         int dstPort;
         String response = "";
         String myMessage;
 
-        Vibe_test(String address, int port, String message){
+        VibrationStrengthTask(String address, int port, String message){
             dstAddress = address;
             dstPort = port;
             myMessage = message;

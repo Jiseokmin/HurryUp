@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -56,20 +57,24 @@ public class StreamingActivity extends AppCompatActivity {
         btn_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyClientTask myClientTask = new MyClientTask(IP_ADDRESS, PORT_NUMBER, "toggle camera");
-                myClientTask.execute();
+                ToggleCamera toggleCamera = new ToggleCamera(IP_ADDRESS, PORT_NUMBER, "toggle camera", StreamingActivity.this);
+                toggleCamera.execute();
             }
         });
     }
 
-    public class MyClientTask extends AsyncTask<Void, Void, Void> {
+    private static class ToggleCamera extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<StreamingActivity> activityWeakReference;
+
         String dstAddress;
         int dstPort;
         String response = "";
         String myMessage;
 
         //constructor
-        MyClientTask(String address, int port, String message){
+        ToggleCamera(String address, int port, String message, StreamingActivity context) {
+            activityWeakReference = new WeakReference<>(context);
             dstAddress = address;
             dstPort = port;
             myMessage = message;
@@ -111,7 +116,8 @@ public class StreamingActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            textView_response.setText(response);
+            StreamingActivity streamingActivity = activityWeakReference.get();
+            streamingActivity.textView_response.setText(response);
             super.onPostExecute(result);
         }
     }

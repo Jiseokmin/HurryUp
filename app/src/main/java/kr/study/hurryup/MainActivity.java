@@ -1,6 +1,7 @@
 package kr.study.hurryup;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +10,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class MainActivity extends AppCompatActivity {
+    String IP_ADDRESS;
+    int PORT_NUMBER = 8888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IP_ADDRESS = ((OptionData) this.getApplication()).getIp_address();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,12 +45,11 @@ public class MainActivity extends AppCompatActivity {
         OptionData optionData = (OptionData) getApplication();
         optionData.setIp_address("");
 
-        imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
-
-                @Override
-                public void onClick(View arg0) {
-                Intent intent = new Intent(getApplicationContext(), SelectPoseActivity.class);
-                MainActivity.this.startActivity(intent);
+        imagebtn_start.setOnClickListener(new View.OnClickListener() { // 자세 인식 시작
+            @Override
+            public void onClick(View v) {
+                StartCheckPostureTask startCheckPostureTask = new StartCheckPostureTask(IP_ADDRESS, PORT_NUMBER, "toggle posture check");
+                startCheckPostureTask.execute();
             }
         });
 
@@ -46,19 +57,78 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), StreamingActivity.class);
-                //intent.putExtra("optionData", optionData);
                 startActivity(intent);
             }
         });
 
-        imagebtn_setting.setOnClickListener(new View.OnClickListener() {        //// 설정 화면으로 이동
-
+        imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SelectPoseActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        imagebtn_setting.setOnClickListener(new View.OnClickListener() {        //// 설정 화면으로 이동
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OptionActivity.class);
                 //intent.putExtra("optionData", optionData);
                 MainActivity.this.startActivity(intent);
             }
         });
+    }
+
+    private static class StartCheckPostureTask extends AsyncTask<Void, Void, Void> {
+        String dstAddress;
+        int dstPort;
+        String response = "";
+        String myMessage;
+
+        //constructor
+        StartCheckPostureTask(String address, int port, String message) {
+            dstAddress = address;
+            dstPort = port;
+            myMessage = message;
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+
+            Socket socket;
+            try {
+                socket = new Socket(dstAddress, dstPort);
+                InputStream inputStream = socket.getInputStream();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
+                byte[] buffer = new byte[1024];
+
+                //송신
+                OutputStream out = socket.getOutputStream();
+                out.write(myMessage.getBytes());
+
+                //수신
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1){
+                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                }
+
+                socket.close();
+                response = byteArrayOutputStream.toString("UTF-8");
+
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+                response = "UnknownHostException: " + e.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+                response = "IOException: " + e.toString();
+            }
+            Log.w("message : ", myMessage);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton imagebtn_seenow = (ImageButton) findViewById(R.id.seeNow);
         final ImageButton imagebtn_select = (ImageButton) findViewById(R.id.select);
         final ImageButton imagebtn_setting = (ImageButton) findViewById(R.id.setting);
+        final Button btn_test = (Button)findViewById(R.id.btn_gotoTest);
 
         //OptionData optionData = new OptionData("");
         OptionData optionData = (OptionData) getApplication();
@@ -73,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OptionActivity.class);
+                //intent.putExtra("optionData", optionData);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        btn_test.setOnClickListener(new View.OnClickListener(){                 //// 테스트 화면(기존 옵션)
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
                 //intent.putExtra("optionData", optionData);
                 MainActivity.this.startActivity(intent);
             }

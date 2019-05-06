@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class OptionActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity {
     private EditText editText_ip_address;
 
     final int PORT = 8888;
@@ -26,15 +26,15 @@ public class OptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_option);
+        setContentView(R.layout.activity_test);
 
-        final RadioGroup radio_vibe_strength = findViewById(R.id.Group_vib);
-        final SeekBar sb_sound = findViewById(R.id.seekBar_sound);
-        final Button btn_ok = findViewById(R.id.btn_ok);
-        final Button btn_cancel = findViewById(R.id.btn_cancel);
+        final RadioGroup radio_vibe_strength = findViewById(R.id.Group_vib_test);
+        final SeekBar sb_sound = findViewById(R.id.seekBar_sound_test);
+        final Button btn_ok = findViewById(R.id.btn_ok_test);
+        final Button btn_cancel = findViewById(R.id.btn_cancel_test);
 
-        //editText_ip_address = findViewById(R.id.input_ip);
-        //editText_ip_address.setText(getIpAddress());
+        editText_ip_address = findViewById(R.id.input_ip_test);
+        editText_ip_address.setText(getIpAddress());
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -44,10 +44,13 @@ public class OptionActivity extends AppCompatActivity {
             String message;
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.rbt_weak){
+                if(checkedId == R.id.rbt_off_test){
+                    message = "vibration strength 0";
+                }
+                else if(checkedId == R.id.rbt_weak_test){
                     message = "vibration strength 0.6";
                 }
-                else if(checkedId == R.id.rbt_strong){
+                else if(checkedId == R.id.rbt_strong_test){
                     message = "vibration strength 1";
                 }
                 else{

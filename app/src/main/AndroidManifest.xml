@@ -28,6 +28,7 @@
         <activity android:name=".PictureActivity" />
         <activity android:name=".SelectPoseActivity" />
         <activity android:name=".StreamingActivity"/>
+        <activity android:name=".TestActivity"/>
     </application>
 
 </manifest>

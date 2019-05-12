@@ -8,9 +8,9 @@
     <application
         android:name=".OptionData"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/yoga_icon"
+        android:label="허리업"
+        android:roundIcon="@mipmap/yoga_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MainActivity" />
         <activity android:name=".OptionActivity" />
         <activity android:name=".PictureActivity" />

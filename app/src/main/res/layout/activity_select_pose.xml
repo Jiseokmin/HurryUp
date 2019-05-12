@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="허리uP"
+            android:text="허리업"
             android:textColor="#000000"
             android:textStyle="bold"
             android:layout_gravity="center"
@@ -31,34 +31,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="자세인식 종류 선택"
+        android:text="자세 교정 운동 선택"
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:textSize="24dp"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/pose_basic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_pose_basic"/>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -69,6 +48,7 @@
 
         <ImageButton
             android:id="@+id/pose_exercise"
+            android:layout_marginTop="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 

@@ -1,8 +1,11 @@
 package kr.study.hurryup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +24,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import info.hoang8f.widget.FButton;
+
 public class MainActivity extends AppCompatActivity {
     String IP_ADDRESS;
+    private String[] pose_exercise_list = {"코브라", "스트레칭2", "스트레칭3"};
     int PORT_NUMBER = 8888;
 
     @Override
@@ -30,10 +39,17 @@ public class MainActivity extends AppCompatActivity {
         IP_ADDRESS = ((OptionData) this.getApplication()).getIp_address();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ShimmerTextView toolbar_title = (ShimmerTextView) findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);         ///// 맨 상단의 액션바 안보이게 하기
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        Shimmer shimmer_toolbar_title = new Shimmer();  ///타이틀 반짝 거리는거
+        shimmer_toolbar_title.setDuration(1500);
+        shimmer_toolbar_title.start(toolbar_title);
+
+
 
         //////4개의 이미지 버튼 생성///////
 
@@ -41,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton imagebtn_seenow = (ImageButton) findViewById(R.id.seeNow);
         final ImageButton imagebtn_select = (ImageButton) findViewById(R.id.select);
         final ImageButton imagebtn_setting = (ImageButton) findViewById(R.id.setting);
-        final Button btn_test = (Button)findViewById(R.id.btn_gotoTest);
+        final FButton btn_test = (FButton)findViewById(R.id.btn_gotoTest);
+
+        btn_test.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
+
 
         //OptionData optionData = new OptionData("");
         OptionData optionData = (OptionData) getApplication();
@@ -66,8 +85,20 @@ public class MainActivity extends AppCompatActivity {
         imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SelectPoseActivity.class);
-                MainActivity.this.startActivity(intent);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
+                dialog.setTitle("스트레칭 자세를 선택하세요.")
+                        .setItems(pose_exercise_list, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int i) {
+
+                                // working with rasp camera
+
+                                Intent intent = new Intent(MainActivity.this, PictureActivity.class);
+                                intent.putExtra("num",i);
+                                MainActivity.this.startActivity(intent);
+                            }
+                        });
+                AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
 

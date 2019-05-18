@@ -18,6 +18,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import info.hoang8f.widget.FButton;
+
 public class OptionActivity extends AppCompatActivity {
     private EditText editText_ip_address;
 
@@ -30,8 +32,11 @@ public class OptionActivity extends AppCompatActivity {
 
         final RadioGroup radio_vibe_strength = findViewById(R.id.Group_vib);
         final SeekBar sb_sound = findViewById(R.id.seekBar_sound);
-        final Button btn_ok = findViewById(R.id.btn_ok);
-        final Button btn_cancel = findViewById(R.id.btn_cancel);
+        final FButton btn_ok = (FButton)findViewById(R.id.btn_ok);
+        final FButton btn_cancel = (FButton)findViewById(R.id.btn_cancel);
+
+        btn_ok.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
+        btn_cancel.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
 
         //editText_ip_address = findViewById(R.id.input_ip);
         //editText_ip_address.setText(getIpAddress());

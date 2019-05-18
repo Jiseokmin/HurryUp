@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Option"
+        android:fontFamily="@font/typo"
         android:textColor="#000000"
-        android:textSize="30dp"
-        android:textStyle="bold"
+        android:textSize="33dp"
         android:paddingTop="10dp"
         android:paddingBottom="20dp" />
 
@@ -115,7 +116,7 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
-        <Button
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,9 +124,13 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            fbutton:shadowColor="@color/fbutton_color_asbestos"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             android:text="Save" />
 
-        <Button
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,6 +138,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            fbutton:shadowColor="@color/fbutton_color_asbestos"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             android:text="Cancel" />
 
     </LinearLayout>

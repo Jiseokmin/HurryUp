@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,8 +59,9 @@ public class PictureActivity extends AppCompatActivity {
         text.setText(readText(num));                     // 이전 화면에서 선택한 자세에 대한 설명 제공 부분
 
         switch(num){
-            case 1:
-                picture.setImageResource(R.drawable.yoga_cobra);
+            case 0:
+                GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(picture);
+                Glide.with(this).load(R.drawable.cobra_ani).into(picture);
                 break;
             case 2:
                 picture.setImageResource(R.drawable.yoga_dari);

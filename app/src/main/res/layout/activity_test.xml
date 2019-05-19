@@ -7,15 +7,16 @@
     android:orientation="vertical"
     tools:context=".TestActivity">
 
+
     <TextView
         android:id="@+id/toolbar_title_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Test"
+        android:fontFamily="@font/typo"
         android:textColor="#000000"
-        android:textSize="30dp"
-        android:textStyle="bold"
+        android:textSize="36dp"
         android:paddingTop="10dp"
         android:paddingBottom="20dp" />
 
@@ -24,20 +25,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:paddingRight="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/txt_ip"
+            android:textColor="#7f8c8d"
             android:text="Input IP : "
             android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/input_ip_test"
+            android:id="@+id/input_ip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
     <LinearLayout
@@ -47,16 +49,36 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Connect" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
         <TextView
-            android:id="@+id/sensitivity_text_test"
+            android:id="@+id/sensitivity_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:textColor="#7f8c8d"
             android:text="Sensitivity"
             android:textSize="25dp" />
 
         <SeekBar
-            android:id="@+id/seekBar_sense_test"
+            android:id="@+id/seekBar_sense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -73,15 +95,16 @@
         android:paddingBottom="20dp">
 
         <TextView
-            android:id="@+id/sound_text_test"
+            android:id="@+id/sound_text"
             android:layout_width="wrap_content"
+            android:textColor="#7f8c8d"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Sound"
             android:textSize="25dp" />
 
         <SeekBar
-            android:id="@+id/seekBar_sound_test"
+            android:id="@+id/seekBar_sound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -98,7 +121,8 @@
         android:paddingBottom="20dp">
 
         <TextView
-            android:id="@+id/vibration_text_test"
+            android:id="@+id/vibration_text"
+            android:textColor="#7f8c8d"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -106,7 +130,7 @@
             android:textSize="25dp" />
 
         <RadioGroup
-            android:id="@+id/Group_vib_test"
+            android:id="@+id/Group_vib"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -115,21 +139,21 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rbt_off_test"
+                android:id="@+id/rbt_off"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Off" />
 
             <RadioButton
-                android:id="@+id/rbt_weak_test"
+                android:id="@+id/rbt_weak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Weak" />
 
             <RadioButton
-                android:id="@+id/rbt_strong_test"
+                android:id="@+id/rbt_strong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -138,7 +162,6 @@
         </RadioGroup>
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,24 +170,14 @@
         android:paddingBottom="20dp">
 
         <Button
-            android:id="@+id/btn_ok_test"
+            android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Save" />
-
-        <Button
-            android:id="@+id/btn_cancel_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Cancel" />
+            android:text="OK" />
 
     </LinearLayout>
 

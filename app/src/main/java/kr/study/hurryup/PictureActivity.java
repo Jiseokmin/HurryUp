@@ -61,7 +61,7 @@ public class PictureActivity extends AppCompatActivity {
         switch(num){
             case 0:
                 GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(picture);
-                Glide.with(this).load(R.drawable.cobra_ani).into(picture);
+                Glide.with(this).load(R.drawable.cobra_ani2).into(picture);
                 break;
             case 2:
                 picture.setImageResource(R.drawable.yoga_dari);

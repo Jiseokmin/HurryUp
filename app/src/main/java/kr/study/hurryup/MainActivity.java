@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -38,13 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         IP_ADDRESS = ((OptionData) this.getApplication()).getIp_address();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ShimmerTextView toolbar_title = (ShimmerTextView) findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);         ///// 맨 상단의 액션바 안보이게 하기
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         Shimmer shimmer_toolbar_title = new Shimmer();  ///타이틀 반짝 거리는거
         shimmer_toolbar_title.setDuration(1500);
         shimmer_toolbar_title.start(toolbar_title);
@@ -62,9 +57,15 @@ public class MainActivity extends AppCompatActivity {
         btn_test.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
 
 
+
+
         //OptionData optionData = new OptionData("");
         OptionData optionData = (OptionData) getApplication();
         optionData.setIp_address("");
+        optionData.setVibrator_strength(0);
+        optionData.setSound_volume(0);
+
+
 
         imagebtn_start.setOnClickListener(new View.OnClickListener() { // 자세 인식 시작
             @Override

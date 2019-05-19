@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -43,6 +44,7 @@ public class TestActivity extends AppCompatActivity {
     static Socket socket;
 
     final int PORT = 8888;
+    public double number_sound = 0;        //음량 값 받기 위한 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class TestActivity extends AppCompatActivity {
         seekBar_sound.setProgress(getSoundVolume());
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3;   ///파이썬에서 음량이 최대 10이라 10으로 조정
         int nCurrentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
 
@@ -111,15 +113,16 @@ public class TestActivity extends AppCompatActivity {
         });
 
 
-        if (!connection) {     //연결 실패 했을 때
-            txt_ip.setTextColor(Color.parseColor("#7f8c8d"));
+        if (!connection) {     //connection이 false 일 때
+            txt_ip.setTextColor(Color.parseColor("#7f8c8d"));  // 색 깔 들 회색으로 교체
             txt_sense.setTextColor(Color.parseColor("#7f8c8d"));
             txt_sound.setTextColor(Color.parseColor("#7f8c8d"));
             txt_vibe.setTextColor(Color.parseColor("#7f8c8d"));
-            for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
+            for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {     //라디오 그룹 false
                 radio_vibe_strength.getChildAt(i).setEnabled(false);
             };
-            seekBar_sound.setProgress(0);
+
+            seekBar_sound.setProgress(0);  // 사운드 0 으로 설정
         }
 
 
@@ -173,13 +176,21 @@ public class TestActivity extends AppCompatActivity {
 
 
 
-
+///////////////////////////////////////////////소리 설정 //////////////////////////////
         seekBar_sound.setMax(nMax);
         seekBar_sound.setProgress(nCurrentVol);
+
         seekBar_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            String message;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress,0);
+                number_sound = seekBar_sound.getProgress() * 0.1;
+                message = "sound volume "+ number_sound;
+
+                socketTask = new SocketTask(editText_ip_address.getText().toString(), PORT, message);
+                socketTask.execute();
+               // Toast.makeText(getApplicationContext(), "출력할 문자열"+number_sound, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -190,8 +201,13 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+
             }
         });
+        ///////////////////////////////////////////////소리 설정 //////////////////////////////
+
+
+
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override

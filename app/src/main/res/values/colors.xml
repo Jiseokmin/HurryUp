@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurlple">#7c4dff</color>
+    <color name="yellow">#ffb300</color>
+    <color name="green">#00bfa5</color>
+    <color name="red">#ff1100</color>
+    <color name="colorAccent">#FF4081</color>
+
+
     <color name="fbutton_color_turquoise">#1abc9c</color>
     <color name="fbutton_color_green_sea">#16a085</color>
     <color name="fbutton_color_emerald">#2ecc71</color>

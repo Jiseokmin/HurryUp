@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -48,15 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         //////4개의 이미지 버튼 생성///////
 
-        final ImageButton imagebtn_start = (ImageButton) findViewById(R.id.start);
-        final ImageButton imagebtn_seenow = (ImageButton) findViewById(R.id.seeNow);
-        final ImageButton imagebtn_select = (ImageButton) findViewById(R.id.select);
-        final ImageButton imagebtn_setting = (ImageButton) findViewById(R.id.setting);
-        final FButton btn_test = (FButton)findViewById(R.id.btn_gotoTest);
-
-        btn_test.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
-
-
+        final CardView imagebtn_start = (CardView) findViewById(R.id.start);
+        final CardView imagebtn_seenow = (CardView) findViewById(R.id.seeNow);
+        final CardView imagebtn_select = (CardView) findViewById(R.id.select);
+        final CardView imagebtn_setting = (CardView) findViewById(R.id.setting);
+        final CardView imagebtn_test= (CardView) findViewById(R.id.btn_gotoTest);
 
 
         //OptionData optionData = new OptionData("");
@@ -86,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
         imagebtn_select.setOnClickListener(new View.OnClickListener() {        //자세 선택 화면으로 이동
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
-                dialog.setTitle("스트레칭 자세를 선택하세요.")
+
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext(), R.style.MyAlertDialogStyle);
+                dialog.setTitle("자세를 선택하세요!")
                         .setItems(pose_exercise_list, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int i) {
 
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_test.setOnClickListener(new View.OnClickListener(){                 //// 테스트 화면(기존 옵션)
+        imagebtn_test.setOnClickListener(new View.OnClickListener(){                 //// 테스트 화면(기존 옵션)
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getApplicationContext(), TestActivity.class);

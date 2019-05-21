@@ -6,8 +6,9 @@ import android.content.Context;
 
 public class OptionData extends Application {
     private String ip_address;
-    private int vibrator_strength;
-    private int sound_volume;
+    private float vibrator_strength;
+    private double sound_volume;
+    private int correction_sensitivity;
 
     public OptionData() {
     }
@@ -24,19 +25,27 @@ public class OptionData extends Application {
         this.ip_address = ip_address;
     }
 
-    public int getVibrator_strength() {
+    public float getVibrator_strength() {
         return vibrator_strength;
     }
 
-    public void setVibrator_strength(int vibrator_strength) {
+    public void setVibrator_strength(float vibrator_strength) {
         this.vibrator_strength = vibrator_strength;
     }
 
-    public int getSound_volume() {
+    public double getSound_volume() {
         return sound_volume;
     }
 
-    public void setSound_volume(int sound_volume) {
-        this.sound_volume = vibrator_strength;
+    public void setSound_volume(double sound_volume) {
+        this.sound_volume = sound_volume;
+    }
+
+    public int getCorrection_Sensitivity() {
+        return correction_sensitivity;
+    }
+
+    public void setCorrection_Sensitivity(int correction_sensitivity) {
+        this.correction_sensitivity = correction_sensitivity;
     }
 }

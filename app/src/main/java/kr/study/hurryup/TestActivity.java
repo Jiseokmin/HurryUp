@@ -6,158 +6,131 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class TestActivity extends AppCompatActivity {
-    private EditText editText_ip_address ;
+    private EditText editText_ip_address;
     private SeekBar seekBar_sense;
     private SeekBar seekBar_sound;
-    private static RadioGroup radio_vibe_strength;
+    private RadioGroup radio_vibe_strength;
 
-    private static TextView txt_ip;
-    private static TextView txt_sense;
-    private static TextView txt_sound;
-    private static TextView txt_vibe;
+    private RadioButton rbt_off;
+    private RadioButton rbt_weak;
+    private RadioButton rbt_strong;
 
+    private TextView txt_ip;
+    private TextView txt_sense;
+    private TextView txt_sound;
+    private TextView txt_vibe;
 
+    private Button btn_connect;
 
-    SocketTask socketTask;
-    static boolean connection = false;
-    static Socket socket;
+    private SocketTask socketTask;
+    private boolean connection = false;
+    private Socket socket;
 
     final int PORT = 8888;
-    public double number_sound = 0;        //음량 값 받기 위한 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        final Button btn_ok = findViewById(R.id.btn_ok);
-        final Button btn_connect = findViewById(R.id.btn_connect);
 
         editText_ip_address = findViewById(R.id.input_ip);
         seekBar_sense = findViewById(R.id.seekBar_sense);
         seekBar_sound = findViewById(R.id.seekBar_sound);
         radio_vibe_strength = findViewById(R.id.Group_vib);
 
-        txt_ip = (TextView)findViewById(R.id.txt_ip);
-        txt_sense = (TextView)findViewById(R.id.sensitivity_text);
-        txt_sound = (TextView)findViewById(R.id.sound_text);
-        txt_vibe = (TextView)findViewById(R.id.vibration_text);
+        txt_ip = findViewById(R.id.txt_ip);
+        txt_sense = findViewById(R.id.sensitivity_text);
+        txt_sound = findViewById(R.id.sound_text);
+        txt_vibe = findViewById(R.id.vibration_text);
 
+        rbt_off = findViewById(R.id.rbt_off);
+        rbt_weak = findViewById(R.id.rbt_weak);
+        rbt_strong = findViewById(R.id.rbt_strong);
 
-        editText_ip_address.setText(getIpAddress());
-        seekBar_sense.setProgress(getVibratorStrength());
-        seekBar_sound.setProgress(getSoundVolume());
+        btn_connect = findViewById(R.id.btn_connect);
+
+        final Button btn_ok = findViewById(R.id.btn_ok);
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3;   ///파이썬에서 음량이 최대 10이라 10으로 조정
-        int nCurrentVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
+        final int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3;   ///파이썬에서 음량이 최대 10이라 10으로 조정
+        seekBar_sound.setMax(nMax);
+        seekBar_sense.setMax(10);
 
-        seekBar_sense.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+        editText_ip_address.setText(getIpAddress());
+        seekBar_sense.setProgress(getCorrectionSensitivity()*1000);
+        seekBar_sound.setProgress((int) getSoundVolume()*10000);
 
-                if(connection == false) {
-                    return true;
-                }
+        float vibration_strength = getVibratorStrength();
 
-                else if(connection == true) {
-                    return false;
-                }
-
-                return false;
-            }
-        });
-
-
-        seekBar_sound.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-
-                if(connection == false) {
-                    seekBar_sound.setProgress(0);
-                    return true;
-                }
-
-                else if(connection == true) {
-                    return false;
-                }
-
-                return false;
-            }
-        });
-
-
-        if (!connection) {     //connection이 false 일 때
-            txt_ip.setTextColor(Color.parseColor("#7f8c8d"));  // 색 깔 들 회색으로 교체
-            txt_sense.setTextColor(Color.parseColor("#7f8c8d"));
-            txt_sound.setTextColor(Color.parseColor("#7f8c8d"));
-            txt_vibe.setTextColor(Color.parseColor("#7f8c8d"));
-            for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {     //라디오 그룹 false
-                radio_vibe_strength.getChildAt(i).setEnabled(false);
-            };
-
-            seekBar_sound.setProgress(0);  // 사운드 0 으로 설정
+        if (vibration_strength == 1) {
+            radio_vibe_strength.check(rbt_off.getId());
+        }
+        else if (vibration_strength == 0.6) {
+            radio_vibe_strength.check(rbt_weak.getId());
+        }
+        else {
+            radio_vibe_strength.check(rbt_strong.getId());
         }
 
+        txt_ip.setTextColor(Color.parseColor("#7f8c8d"));  // 색 깔 들 회색으로 교체
+        txt_sense.setTextColor(Color.parseColor("#7f8c8d"));
+        txt_sound.setTextColor(Color.parseColor("#7f8c8d"));
+        txt_vibe.setTextColor(Color.parseColor("#7f8c8d"));
 
-        else if (connection == true) {     //connection이 true 일 때
-            txt_ip.setTextColor(Color.parseColor("#00acee"));
-            txt_sense.setTextColor(Color.parseColor("#00acee"));
-            txt_sound.setTextColor(Color.parseColor("#00acee"));
-            txt_vibe.setTextColor(Color.parseColor("#00acee"));
-            for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
-                radio_vibe_strength.getChildAt(i).setEnabled(true);
-            };
-
+        for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {     //라디오 그룹 false
+            radio_vibe_strength.getChildAt(i).setEnabled(false);
         }
+        seekBar_sound.setEnabled(false);
+        seekBar_sense.setEnabled(false);
 
 
-        btn_connect.setOnClickListener(new View.OnClickListener() {
+        btn_connect.setOnClickListener(new View.OnClickListener() { // Connect 버튼 클릭
             String message;
+            int result = 0;
 
             @Override
             public void onClick(View v) {
                 if (!connection) {
                     message = "connect to server";
-                    socketTask = new SocketTask(editText_ip_address.getText().toString(), PORT, message);
-                    socketTask.execute();
+                    socketTask = new SocketTask(TestActivity.this, PORT, message);
+                    try {
+                        result = socketTask.execute().get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (result == 1) {
+                        SetEnableUI();
+                    }
                 }
             }
         });
 
 
-        radio_vibe_strength.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        radio_vibe_strength.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // 진동 세기 설정
             String message;
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Log.wtf("TAG", "CLICKED");
                 if (connection) {
                     if (checkedId == R.id.rbt_off) {
                         message = "vibration strength 0";
@@ -167,28 +140,47 @@ public class TestActivity extends AppCompatActivity {
                         message = "vibration strength 1";
                     } else
                         return;
-                    socketTask = new SocketTask(editText_ip_address.getText().toString(), PORT, message);
+                    socketTask = new SocketTask(TestActivity.this, PORT, message);
                     socketTask.execute();
                 }
             }
         });
 
 
-
-
-///////////////////////////////////////////////소리 설정 //////////////////////////////
-        seekBar_sound.setMax(nMax);
-        seekBar_sound.setProgress(nCurrentVol);
-
-        seekBar_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekBar_sense.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 민감도 설정
             String message;
+            private double sensitivity;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sensitivity = seekBar_sense.getProgress();
+                message = "correction sensitivity "+ sensitivity;
+
+                socketTask = new SocketTask(TestActivity.this, PORT, message);
+                socketTask.execute();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+        seekBar_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 사운드 볼륨 설정
+            String message;
+            private double number_sound;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress,0);
                 number_sound = seekBar_sound.getProgress() * 0.1;
                 message = "sound volume "+ number_sound;
 
-                socketTask = new SocketTask(editText_ip_address.getText().toString(), PORT, message);
+                socketTask = new SocketTask(TestActivity.this, PORT, message);
                 socketTask.execute();
                // Toast.makeText(getApplicationContext(), "출력할 문자열"+number_sound, Toast.LENGTH_LONG).show();
             }
@@ -201,72 +193,105 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-
             }
         });
-        ///////////////////////////////////////////////소리 설정 //////////////////////////////
 
 
 
 
-        btn_ok.setOnClickListener(new View.OnClickListener() {
+        btn_ok.setOnClickListener(new View.OnClickListener() { // OK 버튼 클릭시 서버 소켓 연결 끊고 옵션 저장 후 액티비티 종료
+            int result = 0;
             @Override
             public void onClick(View v) {
                 if (connection) {
-                    socketTask = new SocketTask(editText_ip_address.getText().toString(), PORT, "exit");
-                    socketTask.execute();
+                    socketTask = new SocketTask(TestActivity.this, PORT, "exit");
+                    try {
+                        result = socketTask.execute().get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (result == -1) {
+                        saveOptions();
+                        finish();
+                    }
                 }
-                saveOptions();
-                finish();
             }
         });
+    }
+
+    public void SetEnableUI() {
+        for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
+            radio_vibe_strength.getChildAt(i).setEnabled(true);
+        }
+
+        txt_ip.setTextColor(Color.parseColor("#00acee"));
+        txt_sense.setTextColor(Color.parseColor("#00acee"));
+        txt_sound.setTextColor(Color.parseColor("#00acee"));
+        txt_vibe.setTextColor(Color.parseColor("#00acee"));
+        btn_connect.setEnabled(false);
     }
 
     public String getIpAddress() {
         return ((OptionData) this.getApplication()).getIp_address();
     }
 
-    public int getVibratorStrength() {
+    public float getVibratorStrength() {
         return ((OptionData) this.getApplication()).getVibrator_strength();
     }
 
-    public int getSoundVolume() {
+    public double getSoundVolume() {
         return ((OptionData) this.getApplication()).getSound_volume();
+    }
+
+    public int getCorrectionSensitivity() {
+        return ((OptionData) this.getApplication()).getCorrection_Sensitivity();
     }
 
     private void saveOptions() {
         ((OptionData) this.getApplication()).setIp_address(editText_ip_address.getText().toString());
-        ((OptionData) this.getApplication()).setVibrator_strength(seekBar_sense.getProgress());
-        ((OptionData) this.getApplication()).setSound_volume(seekBar_sense.getProgress());
+        ((OptionData) this.getApplication()).setSound_volume(seekBar_sound.getProgress());
+        ((OptionData) this.getApplication()).setCorrection_Sensitivity(seekBar_sense.getProgress());
+
+        int id = radio_vibe_strength.getCheckedRadioButtonId();
+
+        if (id == rbt_off.getId())
+            ((OptionData) this.getApplication()).setVibrator_strength(0);
+        else if (id == rbt_strong.getId())
+            ((OptionData) this.getApplication()).setVibrator_strength(0.6f);
+        else
+            ((OptionData) this.getApplication()).setVibrator_strength(1.0f);
     }
 
-    private static class SocketTask extends AsyncTask<Void, Void,Void> {
+    private static class SocketTask extends AsyncTask<Void, Void, Integer> {
         String dstAddress;
         int dstPort;
         String myMessage;
 
         BufferedReader b_reader;
         PrintWriter p_writer;
+        private WeakReference<TestActivity> act;
 
-        SocketTask(String address, int port, String message){
-            dstAddress = address;
+        SocketTask(TestActivity context, int port, String message){
             dstPort = port;
             myMessage = message;
+            act = new WeakReference<>(context);
+            TestActivity activity = act.get();
+            dstAddress = activity.editText_ip_address.getText().toString();
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected Integer doInBackground(Void... arg0) {
             try {
-                Log.wtf("State : ", "TRY");
-                if (!connection) {
-                    socket = new Socket(dstAddress, dstPort);
-                    Log.wtf("State : ", "New Socket");
+                TestActivity activity = act.get(); // TestActivity 의 변수나 메소드에 접근하고 싶다면 activity. 으로 접근할 것
+
+                if (!activity.connection) {
+                    activity.socket = new Socket(dstAddress, dstPort);
                     // socket.setSoTimeout(5000);
                 }
 
                 b_reader = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()));
-                p_writer = new PrintWriter(socket.getOutputStream());
+                        new InputStreamReader(activity.socket.getInputStream()));
+                p_writer = new PrintWriter(activity.socket.getOutputStream());
 
                 p_writer.println(myMessage);
                 p_writer.flush();
@@ -278,22 +303,15 @@ public class TestActivity extends AppCompatActivity {
                 if (myMessage.equals("exit")) {
                     b_reader.close();
                     p_writer.close();
-                    socket.close();
-                    connection = false;
+                    activity.socket.close();
+                    activity.connection = false;
                     Log.wtf("State : ", "Disconnected");
+                    return -1;
                 }
-                else if (!connection) {
-                    connection = true;  ////연결 성공했을 때
-                    Log.wtf("State : ", "Connected");
+                else if (!activity.connection) {
+                    activity.connection = true;  ////연결 성공했을 때
 
-                    txt_ip.setTextColor(Color.parseColor("#00acee"));
-                    txt_sense.setTextColor(Color.parseColor("#00acee"));
-                    txt_sound.setTextColor(Color.parseColor("#00acee"));
-                    txt_vibe.setTextColor(Color.parseColor("#00acee"));
-
-                    for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
-                        radio_vibe_strength.getChildAt(i).setEnabled(true);
-                    };
+                    return 1;
                 }
                 Log.wtf("State : ", "End");
 
@@ -302,7 +320,7 @@ public class TestActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return 0;
         }
     }
 }

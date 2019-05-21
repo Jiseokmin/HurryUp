@@ -71,13 +71,13 @@ public class TestActivity extends AppCompatActivity {
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        final int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3;   ///파이썬에서 음량이 최대 10이라 10으로 조정
+        final int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3; // 파이썬에서 음량이 최대 10이라 10으로 조정
         seekBar_sound.setMax(nMax);
-        seekBar_sense.setMax(10);
+        seekBar_sense.setMax(10); // 민감도 최대 10
 
-        editText_ip_address.setText(getIpAddress());
-        seekBar_sense.setProgress(getCorrectionSensitivity()*1000);
-        seekBar_sound.setProgress((int) getSoundVolume()*10000);
+        editText_ip_address.setText(getIpAddress()); // 저장된 IP 불러오기
+        seekBar_sense.setProgress(getCorrectionSensitivity()); // 저장된 민감도 불러오기
+        seekBar_sound.setProgress(getSoundVolume()); // 저장된 사운드 볼륨 불러오기
 
         float vibration_strength = getVibratorStrength();
 
@@ -149,7 +149,7 @@ public class TestActivity extends AppCompatActivity {
 
             seekBar_sense.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 민감도 설정
             String message;
-            private double sensitivity;
+            private int sensitivity;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sensitivity = seekBar_sense.getProgress();
@@ -173,12 +173,12 @@ public class TestActivity extends AppCompatActivity {
 
         seekBar_sound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 사운드 볼륨 설정
             String message;
-            private double number_sound;
+            private int sound_volume;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress,0);
-                number_sound = seekBar_sound.getProgress() * 0.1;
-                message = "sound volume "+ number_sound;
+                sound_volume = seekBar_sound.getProgress();
+                message = "sound volume "+ sound_volume;
 
                 socketTask = new SocketTask(TestActivity.this, PORT, message);
                 socketTask.execute();
@@ -223,6 +223,8 @@ public class TestActivity extends AppCompatActivity {
         for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
             radio_vibe_strength.getChildAt(i).setEnabled(true);
         }
+        seekBar_sound.setEnabled(true);
+        seekBar_sense.setEnabled(true);
 
         txt_ip.setTextColor(Color.parseColor("#00acee"));
         txt_sense.setTextColor(Color.parseColor("#00acee"));
@@ -239,7 +241,7 @@ public class TestActivity extends AppCompatActivity {
         return ((OptionData) this.getApplication()).getVibrator_strength();
     }
 
-    public double getSoundVolume() {
+    public int getSoundVolume() {
         return ((OptionData) this.getApplication()).getSound_volume();
     }
 

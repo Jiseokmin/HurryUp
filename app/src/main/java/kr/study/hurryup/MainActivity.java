@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         optionData.setIp_address("");
         optionData.setVibrator_strength(0);
-        optionData.setSound_volume(0.5);
+        optionData.setSound_volume(5);
         optionData.setCorrection_Sensitivity(5);
 
 

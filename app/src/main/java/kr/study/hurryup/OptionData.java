@@ -7,7 +7,7 @@ import android.content.Context;
 public class OptionData extends Application {
     private String ip_address;
     private float vibrator_strength;
-    private double sound_volume;
+    private int sound_volume;
     private int correction_sensitivity;
 
     public OptionData() {
@@ -33,11 +33,11 @@ public class OptionData extends Application {
         this.vibrator_strength = vibrator_strength;
     }
 
-    public double getSound_volume() {
+    public int getSound_volume() {
         return sound_volume;
     }
 
-    public void setSound_volume(double sound_volume) {
+    public void setSound_volume(int sound_volume) {
         this.sound_volume = sound_volume;
     }
 

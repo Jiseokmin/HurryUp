@@ -297,7 +297,7 @@ public class TestActivity extends AppCompatActivity {
 
                 p_writer.println(myMessage);
                 p_writer.flush();
-                Log.wtf("messagezzgxgfxgfx : ", myMessage);
+                Log.wtf("message : ", myMessage);
 
                 String response = b_reader.readLine();
                 Log.wtf("response : ", response);

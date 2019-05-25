@@ -147,7 +147,7 @@ public class TestActivity extends AppCompatActivity {
         });
 
 
-            seekBar_sense.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 민감도 설정
+        seekBar_sense.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 민감도 설정
             String message;
             private int sensitivity;
             @Override
@@ -182,7 +182,7 @@ public class TestActivity extends AppCompatActivity {
 
                 socketTask = new SocketTask(TestActivity.this, PORT, message);
                 socketTask.execute();
-               // Toast.makeText(getApplicationContext(), "출력할 문자열"+number_sound, Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "출력할 문자열"+number_sound, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -297,7 +297,7 @@ public class TestActivity extends AppCompatActivity {
 
                 p_writer.println(myMessage);
                 p_writer.flush();
-                Log.wtf("message : ", myMessage);
+                Log.wtf("messagezzgxgfxgfx : ", myMessage);
 
                 String response = b_reader.readLine();
                 Log.wtf("response : ", response);

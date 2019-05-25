@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.romainpiel.shimmer.Shimmer;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     String IP_ADDRESS;
     private String[] pose_exercise_list = {"코브라", "스트레칭2", "스트레칭3"};
     int PORT_NUMBER = 8888;
+    public int recog = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         final CardView imagebtn_setting = (CardView) findViewById(R.id.setting);
         final CardView imagebtn_test= (CardView) findViewById(R.id.btn_gotoTest);
 
+        final TextView recog_st_end= (TextView) findViewById(R.id.text_recog);
+
 
         //OptionData optionData = new OptionData("");
         OptionData optionData = (OptionData) getApplication();
@@ -69,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
         imagebtn_start.setOnClickListener(new View.OnClickListener() { // 자세 인식 시작
             @Override
             public void onClick(View v) {
+                if( recog == 0 ) {
+                    recog_st_end.setText("인식 종료");
+                    recog = 1;
+                }
+
+                else if( recog == 1 ) {
+                    recog_st_end.setText("인식 시작");
+                    recog = 0;
+                }
                 StartCheckPostureTask startCheckPostureTask = new StartCheckPostureTask(IP_ADDRESS, PORT_NUMBER, "toggle posture check");
                 startCheckPostureTask.execute();
             }

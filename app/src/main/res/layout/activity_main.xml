@@ -51,6 +51,7 @@
                     android:src="@drawable/ic_ondemand_video_black_24dp"
                     android:padding="10dp" />
                 <TextView
+                    android:id="@+id/text_recog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/redpost"
@@ -65,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="버튼을 클릭하면 인식을 시작합니다!"
+                    android:text="버튼을 클릭하면 인식을 시작/종료 합니다!"
                     android:fontFamily="@font/redpost"
                     android:padding="5dp"
                     android:textColor="@android:color/darker_gray"/>

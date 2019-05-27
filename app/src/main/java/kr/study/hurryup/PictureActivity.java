@@ -54,7 +54,7 @@ public class PictureActivity extends AppCompatActivity {
 
         switch(num){
             case 0:
-                GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(picture);
+                GlideDrawableImageViewTarget imageViewTarget0 = new GlideDrawableImageViewTarget(picture);
                 Glide.with(this).load(R.drawable.cobra_ani3).into(picture);
                 text.setText("[운동순서]"+"\n\n"+
 
@@ -67,11 +67,32 @@ public class PictureActivity extends AppCompatActivity {
                 "4. 편안히 호흡하며 15~30초간 자세를 유지한다. 숨을 내쉬며 바닥으로 돌아온다.");
 
                 break;
-            case 2:
-                picture.setImageResource(R.drawable.yoga_dari);
+            case 1:
+                GlideDrawableImageViewTarget imageViewTarget1 = new GlideDrawableImageViewTarget(picture);
+                Glide.with(this).load(R.drawable.neck_ani).into(picture);
+                text.setText("[운동순서]"+"\n\n"+
+
+                        "1. 바르게 앉은 상태에서 한손으로 반대편쪽 머리를 당겨준다."+"\n\n"+
+
+                        "2. 10초에서 15초정도 유지시켜준 뒤 반대편도 똑같이 당겨준다."+"\n\n"+
+
+                        "3. 총 3번 씩 자세를 반복해준다.");
+
                 break;
-            default:
-                picture.setImageResource(R.drawable.yoga_dari);
+            case 2:
+                GlideDrawableImageViewTarget imageViewTarget2 = new GlideDrawableImageViewTarget(picture);
+                Glide.with(this).load(R.drawable.cat_ani).into(picture);
+                text.setText("[운동순서]"+"\n\n"+
+
+                        "1. 기어가는 자세에서 두 손과 두 무릎을 각각 어깨너비만큼 벌린다."+"\n\n"+
+
+                        "2. 숨을 들이마시면서 머리를 뒤로 젖히고 허리를 움푹하게 바닥 쪽으로 내린다."+"\n\n"+
+
+                        "3. 반대로 숨을 내쉬면서 머리를 숙이는 동시에 복부를 등 쪽으로 당기고 허리를 천장 쪽으로 둥글게 끌어올린다."+"\n\n"+
+
+                        "4. 3번 동작을 3 ~ 5회 반복한 후 호흡을 정리하며 처음 자세로 돌아온다."
+                );
+
                 break;
         }                                                   //일단 테스트 용으로 2개 추가, 이후 더 추가 예정
 

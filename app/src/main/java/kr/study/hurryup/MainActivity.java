@@ -31,7 +31,7 @@ import info.hoang8f.widget.FButton;
 
 public class MainActivity extends AppCompatActivity {
     String IP_ADDRESS;
-    private String[] pose_exercise_list = {"코브라", "스트레칭2", "스트레칭3"};
+    private String[] pose_exercise_list = {"코브라 자세", "목 스트레칭", "고양이 자세"};
     int PORT_NUMBER = 8888;
     public int recog = 0;
 

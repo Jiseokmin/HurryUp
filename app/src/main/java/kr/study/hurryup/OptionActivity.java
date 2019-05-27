@@ -86,8 +86,8 @@ public class OptionActivity extends AppCompatActivity {
         final FButton btn_ok = (FButton)findViewById(R.id.btn_ok);
         final FButton btn_cancel = (FButton)findViewById(R.id.btn_cancel);
 
-        btn_ok.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
-        btn_cancel.setButtonColor(getResources().getColor(R.color.fbutton_color_twitter));
+        btn_ok.setButtonColor(getResources().getColor(R.color.fbutton_color_orange));
+        btn_cancel.setButtonColor(getResources().getColor(R.color.fbutton_color_orange));
 
         final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
@@ -124,7 +124,7 @@ public class OptionActivity extends AppCompatActivity {
 
         if(once_connect ==0) {
             for (int i = 37; i < 256; i++) {        /// 0 부터 256 까지 ip 할당해서 맞는 주소 찾기
-                Toast.makeText(this, "dads" + i, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "dads" + i, Toast.LENGTH_LONG).show();
                 array_ip[3] = Integer.toString(i);
                 str_ip = array_ip[0] + "." + array_ip[1] + "." + array_ip[2] + "." + array_ip[3];
                 tmp_str_ip = str_ip;
@@ -139,7 +139,7 @@ public class OptionActivity extends AppCompatActivity {
                     }
                     if (result == 1) {
                         SetEnableUI();
-                        tmp_str_ip = str_ip;
+                        tmp_str_ip = str_ip;    //다음에 또 ip를 찾지 않도록 ip 저장
                         once_connect = 1;
                         break;
                     }

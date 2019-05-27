@@ -21,13 +21,15 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import info.hoang8f.widget.FButton;
+
 
 public class StreamingActivity extends AppCompatActivity {
 
     private XWalkView xWalkWebView;
     TextView textView_ip_address;
     TextView textView_response;
-    Button btn_toggle;
+    FButton btn_toggle;
     String IP_ADDRESS;
     int PORT_NUMBER = 8888;
 
@@ -48,6 +50,7 @@ public class StreamingActivity extends AppCompatActivity {
         textView_ip_address = findViewById(R.id.textView_ip_address);
         textView_response = findViewById(R.id.textView_responseText);
         btn_toggle = findViewById(R.id.btn_toggle);
+        btn_toggle.setButtonColor(getResources().getColor(R.color.fbutton_color_orange));
 
         textView_ip_address.setText(IP_ADDRESS);
 

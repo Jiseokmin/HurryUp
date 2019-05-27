@@ -15,6 +15,7 @@
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/redpost</item>
     </style>
 
 </resources>

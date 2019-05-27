@@ -152,6 +152,7 @@
             fbutton:cornerRadius="5dp"
             android:fontFamily="@font/redpost"
             android:textSize="20dp"
+            android:textColor="#FFFFFF"
             android:text="확인" />
 
         <info.hoang8f.widget.FButton
@@ -167,6 +168,7 @@
             fbutton:shadowEnabled="true"
             fbutton:shadowHeight="5dp"
             fbutton:cornerRadius="5dp"
+            android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:text="취소" />
 

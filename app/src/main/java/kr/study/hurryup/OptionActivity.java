@@ -35,13 +35,18 @@ import info.hoang8f.widget.FButton;
 
 public class OptionActivity extends AppCompatActivity {
 
-    private SeekBar seekBar_sense;
     private SeekBar seekBar_sound;
     private RadioGroup radio_vibe_strength;
+    private RadioGroup radio_sensitivity;
 
     private RadioButton rbt_off;
     private RadioButton rbt_weak;
     private RadioButton rbt_strong;
+
+    private RadioButton rbt_low;
+    private RadioButton rbt_middle;
+    private RadioButton rbt_high;
+
 
     private TextView txt_sense;
     private TextView txt_sound;
@@ -71,17 +76,22 @@ public class OptionActivity extends AppCompatActivity {
         String[] array_ip = str_ip.split("\\.");  /// ip 를 . 단위로 자르기
 
 
-        seekBar_sense = findViewById(R.id.seekBar_sense);
         seekBar_sound = findViewById(R.id.seekBar_sound);
+        radio_sensitivity = findViewById(R.id.Group_sensitivity);
         radio_vibe_strength = findViewById(R.id.Group_vib);
 
-        txt_sense = findViewById(R.id.sensitivity_text);
         txt_sound = findViewById(R.id.sound_text);
+        txt_sense = findViewById(R.id.sensitivity_text);
         txt_vibe = findViewById(R.id.vibration_text);
+
+        rbt_low = findViewById(R.id.rbt_low);
+        rbt_middle = findViewById(R.id.rbt_middle);
+        rbt_high = findViewById(R.id.rbt_high);
 
         rbt_off = findViewById(R.id.rbt_off);
         rbt_weak = findViewById(R.id.rbt_weak);
         rbt_strong = findViewById(R.id.rbt_strong);
+
 
         final FButton btn_ok = (FButton)findViewById(R.id.btn_ok);
         final FButton btn_cancel = (FButton)findViewById(R.id.btn_cancel);
@@ -93,9 +103,6 @@ public class OptionActivity extends AppCompatActivity {
 
         final int nMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 2/3; // 파이썬에서 음량이 최대 10이라 10으로 조정
         seekBar_sound.setMax(nMax);
-        seekBar_sense.setMax(10); // 민감도 최대 10
-
-        seekBar_sense.setProgress(getCorrectionSensitivity()); // 저장된 민감도 불러오기
         seekBar_sound.setProgress(getSoundVolume()); // 저장된 사운드 볼륨 불러오기
 
         float vibration_strength = getVibratorStrength();
@@ -110,6 +117,17 @@ public class OptionActivity extends AppCompatActivity {
             radio_vibe_strength.check(rbt_strong.getId());
         }
 
+        int sensitivity = getCorrectionSensitivity();
+        if (sensitivity == 0) {
+            radio_sensitivity.check(rbt_off.getId());
+        }
+        else if (sensitivity == 1) {
+            radio_sensitivity.check(rbt_weak.getId());
+        }
+        else {
+            radio_sensitivity.check(rbt_strong.getId());
+        }
+
         txt_sense.setTextColor(Color.parseColor("#7f8c8d"));// 색 깔 들 회색으로 교체
         txt_sound.setTextColor(Color.parseColor("#7f8c8d"));
         txt_vibe.setTextColor(Color.parseColor("#7f8c8d"));
@@ -117,8 +135,11 @@ public class OptionActivity extends AppCompatActivity {
         for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {     //라디오 그룹 false
             radio_vibe_strength.getChildAt(i).setEnabled(false);
         }
+        for (int i = 0; i < radio_sensitivity.getChildCount(); i++) {     //라디오 그룹 false
+            radio_sensitivity.getChildAt(i).setEnabled(false);
+        }
         seekBar_sound.setEnabled(false);
-        seekBar_sense.setEnabled(false);
+
 
 ///////////////////////////ip 찾기 //////////////////////////////////////////////////////////
 
@@ -188,26 +209,23 @@ public class OptionActivity extends AppCompatActivity {
         });
 
 
-        seekBar_sense.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { // 민감도 설정
+        radio_sensitivity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // 민감도 설정
             String message;
-            private int sensitivity;
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sensitivity = seekBar_sense.getProgress();
-                message = "correction sensitivity "+ sensitivity;
-
-                socketTask = new SocketTask(OptionActivity.this, PORT, message);
-                socketTask.execute();
-            }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (connection) {
+                    if (checkedId == R.id.rbt_low) {
+                        message = "sensitivity low(0)";
+                    } else if (checkedId == R.id.rbt_middle) {
+                        message = "sensitivity middle(1)";
+                    } else if (checkedId == R.id.rbt_high) {
+                        message = "sensitivity high(2)";
+                    } else
+                        return;
+                    socketTask = new SocketTask(OptionActivity.this, PORT, message);
+                    socketTask.execute();
+                }
             }
         });
 
@@ -327,8 +345,11 @@ public class OptionActivity extends AppCompatActivity {
         for (int i = 0; i < radio_vibe_strength.getChildCount(); i++) {
             radio_vibe_strength.getChildAt(i).setEnabled(true);
         }
+        for (int i = 0; i < radio_sensitivity.getChildCount(); i++) {
+            radio_sensitivity.getChildAt(i).setEnabled(true);
+        }
         seekBar_sound.setEnabled(true);
-        seekBar_sense.setEnabled(true);
+
 
         txt_sense.setTextColor(Color.parseColor("#000000"));
         txt_sound.setTextColor(Color.parseColor("#000000"));
@@ -354,7 +375,6 @@ public class OptionActivity extends AppCompatActivity {
     private void saveOptions() {
         ((OptionData) this.getApplication()).setIp_address(str_ip);
         ((OptionData) this.getApplication()).setSound_volume(seekBar_sound.getProgress());
-        ((OptionData) this.getApplication()).setCorrection_Sensitivity(seekBar_sense.getProgress());
 
         int id = radio_vibe_strength.getCheckedRadioButtonId();
 
@@ -364,6 +384,17 @@ public class OptionActivity extends AppCompatActivity {
             ((OptionData) this.getApplication()).setVibrator_strength(0.6f);
         else
             ((OptionData) this.getApplication()).setVibrator_strength(1.0f);
+
+
+        int id_sense = radio_sensitivity.getCheckedRadioButtonId();
+
+        if (id_sense == rbt_low.getId())
+            ((OptionData) this.getApplication()).setCorrection_Sensitivity(0);
+        else if (id_sense == rbt_middle.getId())
+            ((OptionData) this.getApplication()).setCorrection_Sensitivity(1);
+        else
+            ((OptionData) this.getApplication()).setCorrection_Sensitivity(2);
+
     }
 
     private static class SocketTask extends AsyncTask<Void, Void, Integer> {

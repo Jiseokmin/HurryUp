@@ -69,38 +69,15 @@
             android:fontFamily="@font/redpost"
             android:textSize="25dp" />
 
-
-        <RadioGroup
-            android:id="@+id/Group_sensitivity"
+        <SeekBar
+            android:id="@+id/seekBar_sense"            
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbt_low"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Low" />
-
-            <RadioButton
-                android:id="@+id/rbt_middle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Middle" />
-
-            <RadioButton
-                android:id="@+id/rbt_high"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="High" />
-
-        </RadioGroup>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"/>
+            android:layout_marginRight="30dp" />
+        
 
     </LinearLayout>
 

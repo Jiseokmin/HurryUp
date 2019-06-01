@@ -71,32 +71,6 @@
         android:paddingBottom="20dp">
 
         <TextView
-            android:id="@+id/sensitivity_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="#7f8c8d"
-            android:text="Sensitivity"
-            android:textSize="25dp" />
-
-        <SeekBar
-            android:id="@+id/seekBar_sense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="30dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
-
-        <TextView
             android:id="@+id/sound_text"
             android:layout_width="wrap_content"
             android:textColor="#7f8c8d"
@@ -113,6 +87,55 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="30dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/sensitivity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Sensitivity"
+            android:textColor="#7f8c8d"
+            android:textSize="25dp" />
+
+        <RadioGroup
+            android:id="@+id/Group_sensitivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbt_low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Low" />
+
+            <RadioButton
+                android:id="@+id/rbt_middle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Middle" />
+
+            <RadioButton
+                android:id="@+id/rbt_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="High" />
+
+        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout

@@ -302,6 +302,7 @@ public class TestActivity extends AppCompatActivity {
                 String response = b_reader.readLine();
                 Log.wtf("response : ", response);
 
+                ///////////////////////////////////////
                 if (myMessage.equals("exit")) {
                     b_reader.close();
                     p_writer.close();

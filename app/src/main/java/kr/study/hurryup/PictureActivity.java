@@ -81,7 +81,7 @@ public class PictureActivity extends AppCompatActivity {
                 break;
             case 2:
                 GlideDrawableImageViewTarget imageViewTarget2 = new GlideDrawableImageViewTarget(picture);
-                Glide.with(this).load(R.drawable.cat_ani).into(picture);
+                Glide.with(this).load(R.drawable.cat_ani2).into(picture);
                 text.setText("[운동순서]"+"\n\n"+
 
                         "1. 기어가는 자세에서 두 손과 두 무릎을 각각 어깨너비만큼 벌린다."+"\n\n"+

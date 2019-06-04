@@ -15,49 +15,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/textView_responseText"
         android:background="#ffffff"
         />
-
-    <TextView
-        android:textSize="24dp"
-        android:text="ip address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView_ip_address"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/textView_responseText"
-        android:layout_weight="1"
-        android:paddingBottom="12dp" />
-
-    <TextView
-        android:textSize="24dp"
-        android:text="Toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView_responseText"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/btn_toggle"
-        android:layout_weight="1"/>
-
-    <info.hoang8f.widget.FButton
-        android:textSize="23dp"
-        android:text="화면 보기"
-        android:layout_width="123dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_toggle"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:fontFamily="@font/redpost"
-        fbutton:shadowColor="@color/fbutton_color_asbestos"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="5dp"
-        android:textColor="#FFFFFF"
-        fbutton:cornerRadius="5dp"
-        android:layout_weight="1"/>
-
 
 </RelativeLayout>

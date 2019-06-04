@@ -6,6 +6,7 @@ import android.content.Context;
 
 public class OptionData extends Application {
     private String ip_address;
+    private String rasp_ip;
     private float vibrator_strength;
     private int sound_volume;
     private int correction_sensitivity;
@@ -23,6 +24,14 @@ public class OptionData extends Application {
 
     public void setIp_address(String ip_address) {
         this.ip_address = ip_address;
+    }
+
+    public String getRasp_ip_address() {
+        return rasp_ip;
+    }
+
+    public void setRasp_ip_address(String rasp_ip) {
+        this.rasp_ip = rasp_ip;
     }
 
     public float getVibrator_strength() {

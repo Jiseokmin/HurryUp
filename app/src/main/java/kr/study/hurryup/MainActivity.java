@@ -20,19 +20,24 @@ import android.widget.Toast;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import info.hoang8f.widget.FButton;
 
 public class MainActivity extends AppCompatActivity {
-    String IP_ADDRESS;
+    private String IP_ADDRESS, RASP_IP;
+    private boolean check_posture_check = false;
     private String[] pose_exercise_list = {"코브라 자세", "목 스트레칭", "고양이 자세"};
-    int PORT_NUMBER = 8888;
+    private int PORT_NUMBER = 8888;
     public int recog = 0;
 
     @Override
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         IP_ADDRESS = ((OptionData) this.getApplication()).getIp_address();
+        RASP_IP = ((OptionData) this.getApplication()).getRasp_ip_address();
 
         ShimmerTextView toolbar_title = (ShimmerTextView) findViewById(R.id.toolbar_title);
         Shimmer shimmer_toolbar_title = new Shimmer();  ///타이틀 반짝 거리는거
@@ -59,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView recog_st_end= (TextView) findViewById(R.id.text_recog);
 
-
         //OptionData optionData = new OptionData("");
         OptionData optionData = (OptionData) getApplication();
 
         optionData.setIp_address("");
+        optionData.setRasp_ip_address("");
         optionData.setVibrator_strength(0);
         optionData.setSound_volume(5);
         optionData.setCorrection_Sensitivity(5);
@@ -73,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         imagebtn_start.setOnClickListener(new View.OnClickListener() { // 자세 인식 시작
             @Override
             public void onClick(View v) {
+                IP_ADDRESS = ((OptionData) MainActivity.this.getApplication()).getIp_address();
+
                 if( recog == 0 ) {
                     recog_st_end.setText("인식 종료");
                     recog = 1;
@@ -82,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
                     recog_st_end.setText("인식 시작");
                     recog = 0;
                 }
-                StartCheckPostureTask startCheckPostureTask = new StartCheckPostureTask(IP_ADDRESS, PORT_NUMBER, "toggle posture check");
+
+                StartCheckPostureTask startCheckPostureTask = new StartCheckPostureTask(MainActivity.this, IP_ADDRESS, PORT_NUMBER, "toggle posture check");
                 startCheckPostureTask.execute();
             }
         });
@@ -135,50 +144,62 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        StartCheckPostureTask startCheckPostureTask = new StartCheckPostureTask(MainActivity.this, IP_ADDRESS, PORT_NUMBER, "disable posture check");
+        startCheckPostureTask.execute();
+        finish();
+    }
+
     private static class StartCheckPostureTask extends AsyncTask<Void, Void, Void> {
         String dstAddress;
         int dstPort;
-        String response = "";
         String myMessage;
 
-        //constructor
-        StartCheckPostureTask(String address, int port, String message) {
-            dstAddress = address;
+        BufferedReader b_reader;
+        PrintWriter p_writer;
+        private WeakReference<MainActivity> act;
+        Socket socket;
+
+        StartCheckPostureTask(MainActivity context, String ip_address, int port, String message){
             dstPort = port;
             myMessage = message;
+            act = new WeakReference<>(context);
+            MainActivity activity = act.get();
+            dstAddress = ip_address;
         }
 
         @Override
         protected Void doInBackground(Void... arg0) {
-
-            Socket socket;
             try {
+                MainActivity activity = act.get(); // TestActivity 의 변수나 메소드에 접근하고 싶다면 activity. 으로 접근할 것
+
                 socket = new Socket(dstAddress, dstPort);
-                InputStream inputStream = socket.getInputStream();
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
-                byte[] buffer = new byte[1024];
+                socket.setSoTimeout(10000);
 
-                //송신
-                OutputStream out = socket.getOutputStream();
-                out.write(myMessage.getBytes());
+                b_reader = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream()));
+                p_writer = new PrintWriter(socket.getOutputStream());
 
-                //수신
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1){
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                p_writer.println(myMessage);
+                p_writer.flush();
+                Log.wtf("message : ", myMessage);
+
+                String response = b_reader.readLine();
+                Log.wtf("response : ", response);
+
+                if (myMessage.equals("toggle posture check")) {
+                    activity.check_posture_check = !activity.check_posture_check;
                 }
-
+                b_reader.close();
+                p_writer.close();
                 socket.close();
-                response = byteArrayOutputStream.toString("UTF-8");
 
             } catch (UnknownHostException e) {
                 e.printStackTrace();
-                response = "UnknownHostException: " + e.toString();
             } catch (IOException e) {
                 e.printStackTrace();
-                response = "IOException: " + e.toString();
             }
-            Log.w("message : ", myMessage);
             return null;
         }
 

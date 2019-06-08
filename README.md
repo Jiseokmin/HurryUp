@@ -7,8 +7,8 @@
 ####################################################################################
 ## What equipment is needed ##
 1. RaspberryPi camera
-  <img width="139" alt="캡처" src="https://user-images.githubusercontent.com/28971360/59142935-9e2ea180-8a00-11e9-8186-4750846de12b.PNG">
-
+<center><img width="139" alt="캡처" src="https://user-images.githubusercontent.com/28971360/59142935-9e2ea180-8a00-11e9-8186-4750846de12b.PNG"></center>
+  
 <img width="117" alt="캡처2" src="https://user-images.githubusercontent.com/28971360/59142957-c1595100-8a00-11e9-962e-67d233afdcda.PNG">
 
 

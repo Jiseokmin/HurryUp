@@ -124,10 +124,10 @@ public class OptionActivity extends AppCompatActivity {
 ///////////////////////////ip 찾기 //////////////////////////////////////////////////////////
 
         if(once_connect ==0) {
-            for (int i = 29; i < 256; i++) {        /// 0 부터 255 까지 ip 할당해서 맞는 주소 찾기
+            for (int i = 40; i < 256; i++) {        /// 0 부터 255 까지 ip 할당해서 맞는 주소 찾기
                 //Toast.makeText(this, "connected ip: " + i, Toast.LENGTH_LONG).show();
                 array_ip[3] = Integer.toString(i);
-                str_ip = array_ip[0] + "." + array_ip[1] + "." + array_ip[2] + "." + array_ip[3];
+                str_ip = array_ip[0] + "." + array_ip[1] + "." + 61 + "." + array_ip[3];
                 tmp_str_ip = str_ip;
 
                 if (!connection) {
